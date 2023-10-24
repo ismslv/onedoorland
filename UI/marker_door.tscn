@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://hodx7wsnuout"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yifg7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_yonq1"]
+size = Vector3(0.001, 0.02, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7qek4"]
+resource_local_to_scene = true
+render_priority = 10
+transparency = 1
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 1.5
+
+[node name="marker_door" type="Node3D"]
+
+[node name="front" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001, 2.08165e-12, 2.08165e-12)
+material_override = SubResource("StandardMaterial3D_yifg7")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_yonq1")
+
+[node name="back" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, 2.08165e-12, 2.08165e-12)
+material_override = SubResource("StandardMaterial3D_7qek4")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_yonq1")
+skeleton = NodePath("../front")

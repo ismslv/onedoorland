@@ -1,0 +1,229 @@
+[gd_scene load_steps=16 format=3 uid="uid://b0yd1msnd1ejn"]
+
+[ext_resource type="Script" path="res://UI/UI.gd" id="1_hksx1"]
+[ext_resource type="Texture2D" uid="uid://d1oslkso884kt" path="res://images/cursor_simple.png" id="2_1t25a"]
+[ext_resource type="Texture2D" uid="uid://dl0wxpgpofqti" path="res://images/cursor_interact.png" id="3_8aynn"]
+[ext_resource type="Texture2D" uid="uid://d3hoih7q4h3k7" path="res://images/cursor_look.png" id="4_7a4nl"]
+[ext_resource type="Texture2D" uid="uid://5xrfs66lnply" path="res://images/cursor_grab.png" id="5_08rva"]
+[ext_resource type="Texture2D" uid="uid://chwh3f4qwcha2" path="res://images/cursor_projector.png" id="6_ngpjc"]
+[ext_resource type="Shader" path="res://shaders/blur.gdshader" id="7_ifdqk"]
+[ext_resource type="Shader" path="res://shaders/diamond_pattern.gdshader" id="8_85uyh"]
+[ext_resource type="PackedScene" uid="uid://bdsj0vhirifob" path="res://UI/UI_Map.tscn" id="9_xfmkh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8odnv"]
+shader = ExtResource("7_ifdqk")
+shader_parameter/amount = 3.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ke7uy"]
+shader = ExtResource("8_85uyh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s002u"]
+bg_color = Color(0.0980392, 0.235294, 0.313726, 0.67451)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="SystemFont" id="SystemFont_q1lec"]
+font_names = PackedStringArray("Arial Black")
+subpixel_positioning = 0
+
+[sub_resource type="Animation" id="Animation_mj45y"]
+resource_name = "message_secret"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(541, 736), Vector2(541, 600), Vector2(541, 608), Vector2(541, 608), Vector2(541, 744)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hvq7e"]
+_data = {
+"message_secret": SubResource("Animation_mj45y")
+}
+
+[node name="UI" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_hksx1")
+
+[node name="cursor" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="default" type="TextureRect" parent="cursor"]
+layout_mode = 2
+texture = ExtResource("2_1t25a")
+expand_mode = 1
+
+[node name="interact" type="TextureRect" parent="cursor"]
+visible = false
+layout_mode = 2
+texture = ExtResource("3_8aynn")
+expand_mode = 1
+
+[node name="look" type="TextureRect" parent="cursor"]
+visible = false
+layout_mode = 2
+texture = ExtResource("4_7a4nl")
+expand_mode = 1
+
+[node name="grab" type="TextureRect" parent="cursor"]
+visible = false
+layout_mode = 2
+texture = ExtResource("5_08rva")
+expand_mode = 1
+
+[node name="projector" type="TextureRect" parent="cursor"]
+visible = false
+layout_mode = 2
+texture = ExtResource("6_ngpjc")
+expand_mode = 1
+
+[node name="Map" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.196078)
+
+[node name="ColorRect" type="ColorRect" parent="Map"]
+material = SubResource("ShaderMaterial_8odnv")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="Map"]
+material = SubResource("ShaderMaterial_ke7uy")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="map_holder" type="SubViewportContainer" parent="Map"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Map" parent="Map/map_holder" instance=ExtResource("9_xfmkh")]
+process_mode = 2
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Label" type="Label" parent="Map"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 21.0
+offset_bottom = 68.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 31
+text = "Институт Противоестественных Наук"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Map"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 76.0
+offset_right = -653.0
+offset_bottom = 134.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.576471)
+theme_override_font_sizes/font_size = 30
+text = "Этаж 1"
+horizontal_alignment = 2
+
+[node name="Label2" type="Label" parent="Map"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 659.0
+offset_top = 76.0
+offset_bottom = 134.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = "Комната"
+
+[node name="Label4" type="Label" parent="Map"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 626.0
+offset_bottom = 684.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.576471)
+theme_override_font_sizes/font_size = 30
+text = "ПРОГРЕСС: 100% (КОМНАТ: 1/1, СЕКРЕТОВ: 1/1)"
+horizontal_alignment = 1
+
+[node name="MessageSecret" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 541.0
+offset_top = 736.0
+offset_right = 750.0
+offset_bottom = 799.0
+
+[node name="PanelContainer" type="PanelContainer" parent="MessageSecret"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.5
+offset_top = -31.5
+offset_right = 68.5
+offset_bottom = 31.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s002u")
+
+[node name="MarginContainer" type="MarginContainer" parent="MessageSecret/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="Label" type="Label" parent="MessageSecret/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_q1lec")
+text = "СЕКРЕТ!"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MessageSecret"]
+libraries = {
+"": SubResource("AnimationLibrary_hvq7e")
+}

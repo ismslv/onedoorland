@@ -1,0 +1,106 @@
+[gd_scene load_steps=11 format=3 uid="uid://cehwi8xlcuep"]
+
+[ext_resource type="Script" path="res://rooms/room9.gd" id="1_ub8df"]
+[ext_resource type="PackedScene" uid="uid://dlkx55x2sdqf6" path="res://items/puzzle1.tscn" id="2_isgf1"]
+[ext_resource type="Script" path="res://data/data_action.gd" id="3_fxebx"]
+[ext_resource type="PackedScene" uid="uid://dbgne0ap5k0jw" path="res://items/door1.tscn" id="4_006qu"]
+[ext_resource type="Material" uid="uid://bqhsqfhk6d60x" path="res://materials/lightbulb.tres" id="5_lgwi0"]
+[ext_resource type="PackedScene" uid="uid://c12o6oxaxlvcn" path="res://items/button_stand.tscn" id="6_u34pr"]
+
+[sub_resource type="Resource" id="Resource_x4wyr"]
+script = ExtResource("3_fxebx")
+action = "unlock_box"
+args = Array[String]([])
+local = true
+onself = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u7gl1"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 3.0
+
+[sub_resource type="Resource" id="Resource_scevc"]
+script = ExtResource("3_fxebx")
+action = "repair_doors"
+args = Array[String]([])
+local = false
+onself = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_165ry"]
+
+[node name="room" type="Node3D" node_paths=PackedStringArray("doors")]
+script = ExtResource("1_ub8df")
+doors = [NodePath("CSGBox3D4/door")]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.05, 2.08165e-12)
+use_collision = true
+size = Vector3(10, 0.1, 10)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.005, 1.5, 2.08165e-12)
+use_collision = true
+size = Vector3(0.1, 3, 10)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.5, -5.005)
+use_collision = true
+size = Vector3(10, 3, 0.1)
+
+[node name="puzzle1" parent="CSGBox3D5" instance=ExtResource("2_isgf1")]
+transform = Transform3D(1.13523, 0, 0, 0, 1.13523, 0, 0, 0, 1.13523, 1.40442, 0.148657, 0.165541)
+action = SubResource("Resource_x4wyr")
+code = "4582"
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.5, 5.01736)
+use_collision = true
+size = Vector3(10, 3, 0.1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.005, 1.5, 2.08165e-12)
+use_collision = true
+size = Vector3(0.1, 3, 10)
+
+[node name="door" parent="CSGBox3D4" instance=ExtResource("4_006qu")]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 0, -0.3, 2.08165e-12)
+door_to_load = 1
+room_to_load_correct = 11
+door_to_load_correct = 2
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 3.05, 2.08165e-12)
+use_collision = true
+size = Vector3(10, 0.1, 10)
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.82796, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+material_override = ExtResource("5_lgwi0")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_u7gl1")
+skeleton = NodePath("../..")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.550925, 0)
+shadow_enabled = true
+shadow_opacity = 0.6
+omni_range = 8.367
+
+[node name="button1" parent="." instance=ExtResource("6_u34pr")]
+transform = Transform3D(-0.148173, 0, 0.988962, 0, 1, 0, -0.988962, 0, -0.148173, -2.16653, 2.08165e-12, -0.0503578)
+
+[node name="Button" parent="button1/CSGBox3D" index="1"]
+actions = Array[ExtResource("3_fxebx")]([SubResource("Resource_scevc")])
+locked = true
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.15845, 1.09824, 0)
+material_override = SubResource("StandardMaterial3D_165ry")
+transparency = 0.7
+use_collision = true
+size = Vector3(1.68496, 2.12643, 1.53995)
+
+[editable path="button1"]

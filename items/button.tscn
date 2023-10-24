@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://bkja0xf7bpxar"]
+
+[ext_resource type="Script" path="res://items/button.gd" id="1_mx0ps"]
+[ext_resource type="Script" path="res://world/interactive.gd" id="2_1rdvn"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_icxr7"]
+top_radius = 0.12
+bottom_radius = 0.15
+height = 0.02
+cap_bottom = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7jcjm"]
+albedo_color = Color(1, 0, 0, 1)
+roughness = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_g8r5s"]
+radius = 0.1
+height = 0.05
+is_hemisphere = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jbfxs"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.592157)
+roughness = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_bwbah"]
+radius = 0.18
+height = 0.18
+is_hemisphere = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g7g3u"]
+radius = 0.212891
+
+[node name="Button" type="CSGBox3D"]
+transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+size = Vector3(0.05, 0.4, 0.4)
+script = ExtResource("1_mx0ps")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.00078e-07, 1, 3.48787e-16, -1, -7.8838e-08, -3.48787e-16, -3.48787e-16, -3.48787e-16, 1, 0.0356908, -5.96046e-08, -1.24485e-17)
+mesh = SubResource("CylinderMesh_icxr7")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.00078e-07, 1, 7.45639e-15, -1, -7.8838e-08, 1.42125e-15, -8.3116e-16, 6.5612e-15, 1, 0.0458519, -0.000525713, 0.000165522)
+material_override = SubResource("StandardMaterial3D_7jcjm")
+mesh = SubResource("SphereMesh_g8r5s")
+skeleton = NodePath("../MeshInstance3D")
+
+[node name="dome" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 3.48787e-16, 1, -4.37114e-08, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_jbfxs")
+mesh = SubResource("SphereMesh_bwbah")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("SphereShape3D_g7g3u")
+
+[node name="Interactive" type="Node3D" parent="StaticBody3D"]
+script = ExtResource("2_1rdvn")
+
+[connection signal="on_action" from="StaticBody3D/Interactive" to="." method="_on_interactive_on_action"]

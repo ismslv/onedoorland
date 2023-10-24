@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://c12o6oxaxlvcn"]
+
+[ext_resource type="Texture2D" uid="uid://kenxkscyjyy8" path="res://images/icon_lock.png" id="1_pxuga"]
+[ext_resource type="PackedScene" uid="uid://bkja0xf7bpxar" path="res://items/button.tscn" id="2_nnpow"]
+
+[node name="button_stand" type="Node3D" groups=["persistent"]]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -3.48787e-16, -1, 3.48787e-16, 1, -3.48787e-16, 1, -3.48787e-16, -4.37114e-08, 0.00284922, 0.610391, -4.97103e-05)
+use_collision = true
+size = Vector3(0.05, 1.2, 0.4)
+
+[node name="lock" type="Sprite3D" parent="CSGBox3D"]
+transform = Transform3D(-1.01937e-08, 8.13383e-17, 0.233204, 8.13384e-17, 0.233204, -8.13383e-17, -0.233204, 8.13384e-17, -1.01937e-08, 0.0283504, 0.158, 0)
+visible = false
+modulate = Color(0.792157, 0, 0, 1)
+texture = ExtResource("1_pxuga")
+
+[node name="Button" parent="CSGBox3D" node_paths=PackedStringArray("to_show_on_lock") instance=ExtResource("2_nnpow")]
+transform = Transform3D(0.69864, -0.715473, 0, 0.715473, 0.69864, -3.48787e-16, 5.48074e-16, -9.62791e-16, 1, -0.134405, 0.721623, -2.32831e-10)
+to_show_on_lock = NodePath("../lock")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, -1.12238e-23, 0, -1.12238e-23, 1, 0, -0.57776, 0)
+radius = 0.39
+height = 0.0724361
+sides = 24
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, -1.12238e-23, 0, -1.12238e-23, 1, 0, -0.491447, 0)
+radius = 0.39
+height = 0.1
+sides = 24
+cone = true

@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4i80wsro3jrp"]
+
+[ext_resource type="Texture2D" uid="uid://dasdcp2sabr3b" path="res://images/steam.png" id="1_mk138"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vi3am"]
+transparency = 1
+albedo_texture = ExtResource("1_mk138")
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_d6w1b"]
+_data = [Vector2(0.00471911, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_o6fig"]
+curve = SubResource("Curve_d6w1b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u01ul"]
+lifetime_randomness = 0.3
+direction = Vector3(2.08165e-12, 1, 2.08165e-12)
+spread = 0.0
+gravity = Vector3(2.08165e-12, 10, 2.08165e-12)
+initial_velocity_min = 0.01
+initial_velocity_max = 0.05
+angular_velocity_min = 0.2
+angular_velocity_max = 0.8
+damping_min = 0.2
+damping_max = 0.5
+angle_min = -180.0
+angle_max = 180.0
+scale_min = 10.0
+scale_max = 20.0
+scale_curve = SubResource("CurveTexture_o6fig")
+turbulence_enabled = true
+turbulence_noise_scale = 0.31
+turbulence_noise_speed = Vector3(0.2, 0.2, 0.2)
+turbulence_noise_speed_random = 0.1
+
+[sub_resource type="QuadMesh" id="QuadMesh_u8r0e"]
+size = Vector2(0.1, 0.1)
+
+[node name="teapot" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000340015, 0.0758407, 0.0829752)
+material_override = SubResource("StandardMaterial3D_vi3am")
+gi_mode = 0
+amount = 100
+lifetime = 2.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_u01ul")
+draw_pass_1 = SubResource("QuadMesh_u8r0e")

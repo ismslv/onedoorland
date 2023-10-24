@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=3 uid="uid://h18wmrkvom22"]
+
+[ext_resource type="Script" path="res://world/room.gd" id="1_wtyir"]
+[ext_resource type="PackedScene" uid="uid://dbgne0ap5k0jw" path="res://items/door1.tscn" id="4_i27fe"]
+[ext_resource type="Material" uid="uid://bqhsqfhk6d60x" path="res://materials/lightbulb.tres" id="5_lpaur"]
+[ext_resource type="PackedScene" uid="uid://b8dmccsqt20gw" path="res://items/secret_item.tscn" id="6_2rylb"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u7gl1"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 3.0
+
+[node name="room" type="Node3D" node_paths=PackedStringArray("doors")]
+script = ExtResource("1_wtyir")
+doors = [NodePath("CSGBox3D5/door"), NodePath("CSGBox3D4/door")]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.05, 2.08165e-12)
+use_collision = true
+size = Vector3(10, 0.1, 10)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.005, 1.5, 2.08165e-12)
+use_collision = true
+size = Vector3(0.1, 3, 10)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.5, -5.005)
+use_collision = true
+size = Vector3(10, 3, 0.1)
+
+[node name="door" parent="CSGBox3D5" instance=ExtResource("4_i27fe")]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 2.08165e-12, -0.3, 0)
+room_to_load = 6
+door_to_load = 1
+room_to_load_correct = 7
+door_to_load_correct = 1
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.5, 5.01736)
+use_collision = true
+size = Vector3(10, 3, 0.1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.005, 1.5, 2.08165e-12)
+use_collision = true
+size = Vector3(0.1, 3, 10)
+
+[node name="door" parent="CSGBox3D4" instance=ExtResource("4_i27fe")]
+transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 2.08165e-12, -0.3, 2.08165e-12)
+room_to_load = 6
+door_to_load = 1
+room_to_load_correct = 9
+locked = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 3.05, 2.08165e-12)
+use_collision = true
+size = Vector3(10, 0.1, 10)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.17832, 0.553482, -2.65135)
+use_collision = true
+size = Vector3(1, 1.93765, 1)
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.82796, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+material_override = ExtResource("5_lpaur")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_u7gl1")
+skeleton = NodePath("../..")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.550925, 0)
+shadow_enabled = true
+shadow_opacity = 0.6
+omni_range = 8.367
+
+[node name="secret_item" parent="." instance=ExtResource("6_2rylb")]
+transform = Transform3D(-5.9075e-08, -0.88401, -0.467467, -1.82077e-08, 0.467467, -0.88401, 1, -4.37114e-08, -4.37114e-08, -3.75852, 0.151912, -2.66083)

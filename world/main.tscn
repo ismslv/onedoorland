@@ -1,0 +1,121 @@
+[gd_scene load_steps=22 format=3 uid="uid://d3yxcfcm5f2mh"]
+
+[ext_resource type="PackedScene" uid="uid://cdk6hwb4hi2wc" path="res://world/player.tscn" id="1_6d4ae"]
+[ext_resource type="Script" path="res://world/world.gd" id="1_403ub"]
+[ext_resource type="Script" path="res://data/data_room.gd" id="2_4i43w"]
+[ext_resource type="PackedScene" uid="uid://du3scef08qw35" path="res://rooms/room1.tscn" id="2_iq58j"]
+[ext_resource type="PackedScene" uid="uid://b0yd1msnd1ejn" path="res://UI/UI.tscn" id="3_u05rd"]
+
+[sub_resource type="Resource" id="Resource_itcp7"]
+script = ExtResource("2_4i43w")
+title = "Комната 1"
+floor = 0
+scene_file = "res://rooms/room1.tscn"
+
+[sub_resource type="Resource" id="Resource_2bmba"]
+script = ExtResource("2_4i43w")
+title = "Комната 2"
+floor = 0
+scene_file = "res://rooms/room2.tscn"
+
+[sub_resource type="Resource" id="Resource_mg3lk"]
+script = ExtResource("2_4i43w")
+title = "Лифт"
+floor = 0
+scene_file = "res://rooms/room3_elevator.tscn"
+
+[sub_resource type="Resource" id="Resource_544v4"]
+script = ExtResource("2_4i43w")
+title = "Винтовая вестница"
+floor = 0
+scene_file = "res://rooms/room_4.tscn"
+
+[sub_resource type="Resource" id="Resource_tnhv3"]
+script = ExtResource("2_4i43w")
+title = "Винтовая вестница"
+floor = 1
+scene_file = "res://rooms/room_4.tscn"
+
+[sub_resource type="Resource" id="Resource_bkjsx"]
+script = ExtResource("2_4i43w")
+title = "Винтовая вестница"
+floor = 2
+scene_file = "res://rooms/room_4.tscn"
+
+[sub_resource type="Resource" id="Resource_y7va4"]
+script = ExtResource("2_4i43w")
+title = "Коридор"
+floor = 0
+scene_file = "res://rooms/room5.tscn"
+
+[sub_resource type="Resource" id="Resource_chcsu"]
+script = ExtResource("2_4i43w")
+title = "Коридор"
+floor = 1
+scene_file = "res://rooms/room6.tscn"
+
+[sub_resource type="Resource" id="Resource_8ett0"]
+script = ExtResource("2_4i43w")
+title = "Комната"
+floor = 1
+scene_file = "res://rooms/room7.tscn"
+
+[sub_resource type="Resource" id="Resource_1jevp"]
+script = ExtResource("2_4i43w")
+title = "Комната"
+floor = 1
+scene_file = "res://rooms/room8.tscn"
+
+[sub_resource type="Resource" id="Resource_orlie"]
+script = ExtResource("2_4i43w")
+title = "Комната"
+floor = 2
+scene_file = "res://rooms/room9.tscn"
+
+[sub_resource type="Resource" id="Resource_qxr4s"]
+script = ExtResource("2_4i43w")
+title = "Комната"
+floor = 2
+scene_file = "res://rooms/room10.tscn"
+
+[sub_resource type="Resource" id="Resource_hwy48"]
+script = ExtResource("2_4i43w")
+title = "Комната"
+floor = 2
+scene_file = "res://rooms/room11.tscn"
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uywl1"]
+sky_top_color = Color(0.709804, 0.658824, 0.580392, 1)
+sky_horizon_color = Color(0.639216, 0.639216, 0.639216, 1)
+
+[sub_resource type="Sky" id="Sky_oyheo"]
+sky_material = SubResource("ProceduralSkyMaterial_uywl1")
+
+[sub_resource type="Environment" id="Environment_77j2o"]
+background_mode = 1
+sky = SubResource("Sky_oyheo")
+ambient_light_source = 3
+ssao_enabled = true
+ssao_radius = 0.66
+ssao_intensity = 1.33
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_403ub")
+rooms = Array[ExtResource("2_4i43w")]([SubResource("Resource_itcp7"), SubResource("Resource_2bmba"), SubResource("Resource_mg3lk"), SubResource("Resource_544v4"), SubResource("Resource_tnhv3"), SubResource("Resource_bkjsx"), SubResource("Resource_y7va4"), SubResource("Resource_chcsu"), SubResource("Resource_8ett0"), SubResource("Resource_1jevp"), SubResource("Resource_orlie"), SubResource("Resource_qxr4s"), SubResource("Resource_hwy48")])
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_77j2o")
+
+[node name="UI" parent="." instance=ExtResource("3_u05rd")]
+unique_name_in_owner = true
+
+[node name="Node3D" type="Node3D" parent="."]
+process_mode = 1
+
+[node name="Player" parent="Node3D" instance=ExtResource("1_6d4ae")]
+speed = 5.0
+acceleration = 50.0
+jump_height = 0.5
+camera_sens = 3.0
+
+[node name="room1" parent="Node3D" instance=ExtResource("2_iq58j")]

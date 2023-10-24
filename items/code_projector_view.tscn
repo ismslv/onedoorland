@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://bj6d7b5qvrad4"]
+
+[ext_resource type="Texture2D" uid="uid://k6h60njh4d5" path="res://images/image_poster_memory.png" id="1_ftgn2"]
+[ext_resource type="Texture2D" uid="uid://04p5pthndnv3" path="res://images/image_poster_memory.jpg" id="1_tqwpl"]
+
+[sub_resource type="SystemFont" id="SystemFont_3alg8"]
+font_names = PackedStringArray("Arial Black")
+
+[sub_resource type="LabelSettings" id="LabelSettings_cwdgh"]
+font = SubResource("SystemFont_3alg8")
+font_size = 140
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_8rlnp"]
+font_names = PackedStringArray("Arial Black")
+
+[sub_resource type="LabelSettings" id="LabelSettings_vlu2s"]
+line_spacing = -15.71
+font = SubResource("SystemFont_8rlnp")
+font_size = 63
+font_color = Color(0, 0, 0, 1)
+
+[node name="code_projector_view" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -280.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+
+[node name="ImagePosterMemory2" type="Sprite2D" parent="."]
+position = Vector2(501.5, 500)
+scale = Vector2(1.25125, 1.255)
+texture = ExtResource("1_tqwpl")
+
+[node name="ImagePosterMemory" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(239.011, 306.02)
+scale = Vector2(0.769574, 0.675517)
+texture = ExtResource("1_ftgn2")
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 462.0
+offset_top = 79.0
+offset_right = 1022.0
+offset_bottom = 380.0
+rotation = 0.669966
+text = "1234"
+label_settings = SubResource("LabelSettings_cwdgh")
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 122.0
+offset_top = 350.0
+offset_right = 990.0
+offset_bottom = 984.0
+scale = Vector2(0.9, 1)
+text = "              СНОВА ЗАБЫЛ
+              СВОЙ КОД?
+НЕ СМОГ ВКЛЮЧИТЬ
+АППАРАТ?
+СТЫДИСЬ: ВМЕСТО
+ШАГА ВПЕРЁД -
+ДВА ШАГА НАЗАД!"
+label_settings = SubResource("LabelSettings_vlu2s")
