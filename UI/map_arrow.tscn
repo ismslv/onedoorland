@@ -4,7 +4,7 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_j5xjg"]
 resource_local_to_scene = true
-radius = 0.002
+radius = 0.001
 height = 1.0
 radial_segments = 6
 rings = 1
@@ -12,7 +12,7 @@ rings = 1
 [sub_resource type="CylinderMesh" id="CylinderMesh_28y0n"]
 resource_local_to_scene = true
 top_radius = 0.0
-bottom_radius = 0.006
+bottom_radius = 0.003
 height = 0.02
 radial_segments = 6
 rings = 1

@@ -3,7 +3,7 @@ extends Interactive
 func switch(state):
 	$GPUParticles3D.emitting = state
 	if state:
-		$Timer.start(5)
+		$Timer.start(15)
 	else:
 		$Timer.stop()
 

@@ -119,3 +119,6 @@ jump_height = 0.5
 camera_sens = 3.0
 
 [node name="room1" parent="Node3D" instance=ExtResource("2_iq58j")]
+
+[node name="timer_stratilat" type="Timer" parent="."]
+one_shot = true

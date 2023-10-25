@@ -1,42 +1,167 @@
 room 0
- name: Комната
+ name: Подсобка
  door 0
-  id: 0
   room: 5
   door: 0
   open: Yes
   # top
  
  door 1
-  room: 9
+  room: 10
   door: 0
-  open: No
-  label: Janitor
+  open: Yes
   # right
+
+room 1
+ name: Лаборатория 1
+ door 0
+  room: 11
+  door: 0
+  open: Yes
+  # left
+
+ door 1
+  room: 8
+  door: 1
+  open: Yes
+  # top
+
+room 2
+ name: Лифт
+ door 0
+  room: 0
+  door: 0
+  open: Yes
+
+room 3
+ name: Винтовая лестница
+ door 0
+  room: 1
+  door: 0
+  open: Yes
+
+room 4
+ name: Винтовая лестница
 
 room 5
  name: Винтовая лестница
  door 0
-  room: 6
-  door: 2
+  room: 1
+  door: 1
   open: Yes
-  # top
 
 room 6
  name: Коридор
  door 0
-  room: 0
-  door: 0
+  room: 12
+  door: 1
   open: Yes
+  # left
+
  door 1
-  room: 0
-  door: 0
+  room: 11
+  door: 1
   open: Yes
+  # right
+
  door 2
   room: 0
-  door: 0
+  door: 1
   open: Yes
+  # lift
+
  door 3
-  room: 0
+  room: 12
   door: 0
   open: Yes
+  # side
+
+room 7
+ name: Коридор
+ door 0
+  room: 3
+  door: 0
+  open: Yes
+  # lift
+
+ door 1
+  room: 6
+  door: 0
+  open: Yes
+  # left
+
+ door 2
+  room: 7
+  door: 0
+  open: Yes
+  # right
+
+room 8
+ name: Лаборатория 2
+ door 0
+  room: 9
+  door: 0
+  open: Yes
+  # top
+
+ door 1
+  room: 7
+  door: 0
+  open: Yes
+  # right
+
+room 9
+ name: Столовая
+ door 0
+  room: 6
+  door: 3
+  open: Yes
+  # left
+
+ door 1
+  room: 7
+  door: 2
+  open: Yes
+  # top
+
+room 10
+ name: Хранилище
+ door 0
+  room: 7
+  door: 1
+  open: Yes
+  # right
+
+room 11
+ name: Лаборатория 3
+ door 0
+  room: 6
+  door: 2
+  open: Yes
+  # right
+
+ door 1
+  room: 8
+  door: 0
+  open: Yes
+  # left (lift)
+
+ door 2
+  room: 9
+  door: 1
+  open: Yes
+  # left side
+
+room 12
+ name: Душевая
+ door 0
+  room: 11
+  door: 2
+  open: Yes
+  # right
+
+ door 1
+  room: 6
+  door: 1
+  open: Yes
+  # left

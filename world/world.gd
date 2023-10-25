@@ -12,6 +12,7 @@ var puzzle_code: String
 var doors_repaired = false
 var rooms_data = {}
 var discovered_connections = []
+var stratilat = []
 
 
 func _ready():
@@ -20,6 +21,9 @@ func _ready():
 	rooms[0].scene = $Node3D/room1
 	rooms[0].scene.on_created()
 	room_entered(0)
+	
+	$timer_stratilat.timeout.connect(on_stratilat_timer)
+	set_timer_stratilat()
 
 
 func _process(delta):
@@ -72,14 +76,14 @@ func load_data():
 			
 			# try int
 			var _i = _s[1].to_int()
-			if !(_i == 0 && _s[1] != "0"):
+			if _s[1] == str(_i):
 				obj_1[_s[0]] = _i
 				continue
 			
 			# try float
 			if _s[1].contains("."):
 				var _f = _s[1].to_float()
-				if !(_f == 0.0 && _s[1] != "0.0"):
+				if _s[1] == str(_f):
 					obj_1[_s[0]] = _f
 					continue
 			
@@ -95,7 +99,32 @@ func load_data():
 	#var data = json.parse_string(data_raw)
 
 
+func get_room_by_distance(start, distance):
+	var steps = 0
+	var room = str(start)
+	while steps < distance:
+		print("step" + str(steps) + ", start room: " + room)
+		var check = false
+		while !check:
+			if rooms_data.room[room].door.size() == 0: room = str(int(room) + 1)
+			var _door_id = randi_range(0, rooms_data.room[room].door.size() - 1)
+			var _door = rooms_data.room[room].door[str(_door_id)]
+			check = str(_door.room) != room && _door.room != start
+			print("check. door: " + str(_door_id) + ", room: " + str(_door.room) + ", check: " + str(check))
+			if check:
+				room = str(_door.room)
+				steps += 1
+	return int(room)
+		
+
+
 func load_room(door_from, room_id, door_number):
+	print(current_room.ID)
+	print(door_from.ID)
+	if !stratilat.is_empty():
+		if door_from.ID == stratilat[1] && current_room.ID == stratilat[0]:
+			room_id = 2
+			door_number = 0
 	var room_object = load(rooms[room_id].scene_file)
 	var room = room_object.instantiate()
 	room.title = rooms[room_id].title
@@ -145,6 +174,7 @@ func room_entered(ID: int):
 	
 	Utils.UI.set_room(ID)
 
+
 func set_connection(room_from, door_from, room_to, door_to):
 	if !([room_from, door_from] in discovered_connections):
 		discovered_connections.append([room_from, door_from])
@@ -155,6 +185,25 @@ func room_entered_mutation(ID: int):
 	current_room.ID = ID
 	current_room.floor = rooms[ID].floor
 	room_entered(ID)
+
+func set_timer_stratilat():
+	var _t = 40 if stratilat.is_empty() else 20
+	print(_t)
+	$timer_stratilat.start(float(_t))
+
+func on_stratilat_timer():
+	if stratilat.is_empty():
+		var room_stratilat = get_room_by_distance(current_room.ID, 5)
+		stratilat = [
+			room_stratilat,
+			randi_range(0, rooms_data.room[str(room_stratilat)].door.size() - 1)
+		]
+		print(stratilat)
+		Utils.UI.stratilat_found(room_stratilat)
+	else:
+		stratilat = []
+		Utils.UI.stratilat_found(-1)
+	set_timer_stratilat()
 
 func button_action(action: ActionData):
 	match action.action:

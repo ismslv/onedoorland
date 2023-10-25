@@ -11,8 +11,8 @@ var current_floor = 0
 
 
 func _ready():
-	set_window_size(2560, 1440)
-	#set_window_size(0,0,true)
+	#set_window_size(2560, 1440)
+	set_window_size(0,0,true)
 	show_map(false)
 
 func set_window_size(x = 0, y = 0, fullscreen = false):
@@ -68,6 +68,12 @@ func show_message(text):
 	$MessageSecret/AnimationPlayer.play("message_secret")
 
 
+func stratilat_found(ID):
+	if ID != -1:
+		show_message("Дверь найдена в комнате «" + Utils.World.rooms_data.room[str(ID)].name + "»!")
+	map.show_stratilat(ID)
+
+
 func update_progress():
 	var rooms_total = map.markers_rooms.size()
 	var rooms_visited = map.visited.size()
@@ -76,14 +82,15 @@ func update_progress():
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("map"): show_map(!map_shown)
+	if Input.is_action_just_pressed("map"):
+		show_map(!map_shown)
+		if map_shown:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if Input.is_action_just_pressed("exit"):
 		if !map_shown:
 			get_tree().quit()
 		else:
 			show_map(false)
-	#if Input.is_action_just_pressed("jump"):
-	#	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-	#		Utils.World.player.release_mouse()
-	#	else:
-	#		Utils.World.player.capture_mouse()
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

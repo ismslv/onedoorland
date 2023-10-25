@@ -11,13 +11,20 @@ var last_pos = Vector3.ZERO
 var doors = {}
 var visited = {}
 var floor_shown = -1
+var connections = {}
+var connections_to = {}
+var current_connection = null
 
 @onready var elevator = $rotate_x/rotate_y/map/floor_0/CSGBox3D3
 
 func _ready():
 	own_world_3d = true
+	var i = 0
 	for r in markers_rooms:
+		r.set_meta("ID", i)
+		i += 1
 		r.hide()
+	Utils.UI.find_child("button_clear_route").button_down.connect(on_clear_route)
 
 
 func _process(delta):
@@ -35,11 +42,19 @@ func set_room(ID: int):
 	visited[ID] = true
 	markers_rooms[ID].show()
 	markers_rooms[ID].get_child(0).text = Utils.World.rooms[ID].title
-	room_create_doors()
+	if !(Utils.World.current_room.ID in doors):
+		room_create_doors()
 
 
 func add_connection(room_from, door_from, room_to, door_to):
-	draw_arrow(doors[room_from][door_from], doors[room_to][door_to])
+	var arrow = draw_arrow(doors[room_from][door_from].front, doors[room_to][door_to].back)
+	connections[[room_from, door_from]] = {
+		"arrow": arrow,
+		"fixed": false
+	}
+	connections_to[[room_to, door_to]] = [room_from, door_from]
+	arrow.hide()
+
 
 func show_floor(floor):
 	floor_shown = floor
@@ -49,6 +64,14 @@ func show_floor(floor):
 			floors[f].visible = f == floor
 	Utils.UI.set_floor_title(floor if floor != -1 else Utils.UI.current_floor)
 	update_camera()
+
+
+func show_stratilat(ID):
+	if ID == -1:
+		$rotate_x/rotate_y/map/marker_stratilat.hide()
+	else:
+		$rotate_x/rotate_y/map/marker_stratilat.show()
+		$rotate_x/rotate_y/map/marker_stratilat.global_position = markers_rooms[ID].global_position
 
 
 func update_player_position():
@@ -62,17 +85,48 @@ func update_player_position():
 
 
 func room_create_doors():
-	if !(Utils.World.current_room.ID in doors):
-		doors[Utils.World.current_room.ID] = []
-		for d in Utils.World.current_room.doors:
-			var door = marker_door_src.instantiate()
-			markers_rooms[Utils.World.current_room.ID].add_child(door)
-			door.get_child(1).material_override.albedo_color = Color.RED if d.locked else Color.WHITE
-			var pos = Utils.World.current_room.to_local(d.global_position)
-			pos = Vector3(pos.x/100,-0.005,pos.z/100)
-			door.position = pos
-			door.rotation_degrees.y = abs(d.rotation_degrees.y) - 90
-			doors[Utils.World.current_room.ID].append(door)
+	doors[Utils.World.current_room.ID] = []
+	var i = 0
+	for d in Utils.World.current_room.doors:
+		var door = marker_door_src.instantiate()
+		markers_rooms[Utils.World.current_room.ID].add_child(door)
+		#door.get_child(1).material_override.albedo_color = Color.RED if d.locked else Color.WHITE
+		var pos = Utils.World.current_room.to_local(d.global_position)
+		pos = Vector3(pos.x/100,-0.005,pos.z/100)
+		door.position = pos
+		door.rotation_degrees.y = abs(d.rotation_degrees.y) - 90
+		doors[Utils.World.current_room.ID].append(door)
+		door.room = Utils.World.current_room.ID
+		door.door = i
+		i += 1
+
+
+func door_mouse_entered(door, front):
+	var ids = [door.room, door.door]
+	if front:
+		if ids in connections:
+			connections[ids].arrow.show()
+			current_connection = connections[ids]
+	else:
+		if ids in connections_to:
+			connections[connections_to[ids]].arrow.show()
+			current_connection = connections[connections_to[ids]]
+
+
+func door_mouse_exited(door, front):
+	if current_connection != null:
+		if !current_connection.fixed:
+			current_connection.arrow.hide()
+			current_connection = null
+
+
+func on_clear_route():
+	for c in connections:
+		if connections[c].fixed:
+			connections[c].fixed = false
+			connections[c].arrow.hide()
+	Utils.UI.find_child("button_clear_route").hide()
+
 	
 func update_doors():
 	for r in doors:
@@ -105,10 +159,22 @@ func set_data(data):
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if active:
+		if Input.is_action_just_pressed("map_rotate"):
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if Input.is_action_just_released("map_rotate"):
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		if Input.is_action_pressed("map_zoom_in"):
+			$Camera3D.size = clamp($Camera3D.size - 0.02, 0.1, 1)
+		elif Input.is_action_pressed("map_zoom_out"):
+			$Camera3D.size = clamp($Camera3D.size + 0.02, 0.1, 1)
 		if event is InputEventMouseMotion:
-			look_dir = event.relative * 0.001
-			_rotate()
-		if event is InputEventKey:
+			if Input.is_action_pressed("map_rotate"):
+				look_dir = event.relative * 0.002
+				_rotate()
+		if Input.is_action_just_pressed("jump"):
+			if current_connection != null:
+				current_connection.fixed = !current_connection.fixed
+		elif event is InputEventKey:
 			if event.pressed:
 				if Input.is_key_pressed(KEY_0):
 					show_floor(-1)
@@ -137,11 +203,8 @@ func draw_arrow(a: Node3D, b: Node3D):
 	#var point_b: Vector3 = $rotate_x/rotate_y/map.to_local(b.global_position)
 	var point_a = a.global_position
 	var point_b = b.global_position
-	print(point_a)
-	print(point_b)
 	var dir = point_b - point_a
 	var arrow_l = 0.02
-	#var up = Vector3.UP
 	var line:Node3D = marker_arrow_src.instantiate()
 	var mesh = line.find_child("line").mesh
 	mesh.height = dir.length() - arrow_l
@@ -153,3 +216,4 @@ func draw_arrow(a: Node3D, b: Node3D):
 		line.look_at(point_b + Vector3(0.0, 0.0, 0.0001), Vector3.UP)
 	else:
 		line.look_at(point_b, Vector3.UP)
+	return line

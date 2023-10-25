@@ -1,9 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://hodx7wsnuout"]
+[gd_scene load_steps=8 format=3 uid="uid://hodx7wsnuout"]
+
+[ext_resource type="Script" path="res://UI/marker_door.gd" id="1_fa1ek"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yifg7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_yonq1"]
-size = Vector3(0.001, 0.02, 0.01)
+size = Vector3(0.002, 0.01, 0.01)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4rnf8"]
+top_radius = 0.0
+bottom_radius = 0.003
+height = 0.005
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6k52b"]
+points = PackedVector3Array(0.00114286, -0.00507936, -0.00507936, 0.00114264, 0.00507936, 0.00507936, -0.001, 0.00471655, 0.00471655, 0.00114264, 0.00507936, -0.00507936, -0.00107937, -0.00507936, -0.00507936, 0.00114286, -0.00507936, 0.00507936, -0.001, -0.00471655, 0.00471655, -0.001, 0.00471655, -0.00471655)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7qek4"]
 resource_local_to_scene = true
@@ -12,17 +22,49 @@ transparency = 1
 emission = Color(1, 1, 1, 1)
 emission_energy_multiplier = 1.5
 
-[node name="marker_door" type="Node3D"]
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8tjhp"]
+points = PackedVector3Array(0.00114286, -0.00507936, -0.00507936, 0.00114264, 0.00507936, 0.00507936, -0.001, 0.00471655, 0.00471655, 0.00114264, 0.00507936, -0.00507936, -0.00107937, -0.00507936, -0.00507936, 0.00114286, -0.00507936, 0.00507936, -0.001, -0.00471655, 0.00471655, -0.001, 0.00471655, -0.00471655)
 
-[node name="front" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001, 2.08165e-12, 2.08165e-12)
+[node name="marker_door" type="Node3D"]
+script = ExtResource("1_fa1ek")
+
+[node name="front" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.0115439, 2.08165e-12)
+
+[node name="front" type="MeshInstance3D" parent="front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 material_override = SubResource("StandardMaterial3D_yifg7")
 cast_shadow = 0
 mesh = SubResource("BoxMesh_yonq1")
+skeleton = NodePath("../..")
 
-[node name="back" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, 2.08165e-12, 2.08165e-12)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="front/front"]
+transform = Transform3D(-4.37114e-08, 1, 3.48787e-16, -1, -4.37114e-08, -3.48787e-16, -3.48787e-16, -3.48787e-16, 1, 0.00322977, 0, 2.08165e-12)
+mesh = SubResource("CylinderMesh_4rnf8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+shape = SubResource("ConvexPolygonShape3D_6k52b")
+
+[node name="back" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[node name="back" type="MeshInstance3D" parent="back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 material_override = SubResource("StandardMaterial3D_7qek4")
 cast_shadow = 0
 mesh = SubResource("BoxMesh_yonq1")
-skeleton = NodePath("../front")
+skeleton = NodePath("../../front/front")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="back/back"]
+transform = Transform3D(-4.37114e-08, -1, 3.48787e-16, 1, -4.37114e-08, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -0.00353848, 2.08165e-12, 2.08165e-12)
+mesh = SubResource("CylinderMesh_4rnf8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+shape = SubResource("ConvexPolygonShape3D_8tjhp")
+
+[connection signal="mouse_entered" from="front" to="." method="_on_front_mouse_entered"]
+[connection signal="mouse_exited" from="front" to="." method="_on_front_mouse_exited"]
+[connection signal="mouse_entered" from="back" to="." method="_on_back_mouse_entered"]
+[connection signal="mouse_exited" from="back" to="." method="_on_back_mouse_exited"]

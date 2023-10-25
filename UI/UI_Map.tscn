@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bdsj0vhirifob"]
+[gd_scene load_steps=12 format=3 uid="uid://bdsj0vhirifob"]
 
 [ext_resource type="Script" path="res://UI/UI_Map.gd" id="1_1gph5"]
 [ext_resource type="PackedScene" uid="uid://hodx7wsnuout" path="res://UI/marker_door.tscn" id="2_bcrve"]
@@ -47,6 +47,9 @@ emission_enabled = true
 emission = Color(1, 1, 1, 1)
 emission_energy_multiplier = 2.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ftfc"]
+albedo_color = Color(0.992157, 0.0666667, 0, 1)
+
 [sub_resource type="Environment" id="Environment_c5wfd"]
 glow_enabled = true
 glow_intensity = 2.28
@@ -54,6 +57,8 @@ glow_blend_mode = 1
 
 [node name="UI_Map" type="SubViewport" node_paths=PackedStringArray("markers_rooms", "floors")]
 transparent_bg = true
+msaa_3d = 1
+physics_object_picking = true
 size = Vector2i(1280, 800)
 script = ExtResource("1_1gph5")
 markers_rooms = [NodePath("rotate_x/rotate_y/map/floor_0/CSGBox3D"), NodePath("rotate_x/rotate_y/map/floor_0/CSGBox3D2"), NodePath("rotate_x/rotate_y/map/floor_0/CSGBox3D3"), NodePath("rotate_x/rotate_y/map/floor_0/CSGCylinder3D"), NodePath("rotate_x/rotate_y/map/floor_1/CSGCylinder3D2"), NodePath("rotate_x/rotate_y/map/floor_2/CSGCylinder3D3"), NodePath("rotate_x/rotate_y/map/floor_0/CSGBox3D4"), NodePath("rotate_x/rotate_y/map/floor_1/CSGBox3D4"), NodePath("rotate_x/rotate_y/map/floor_1/CSGBox3D"), NodePath("rotate_x/rotate_y/map/floor_1/CSGBox3D2"), NodePath("rotate_x/rotate_y/map/floor_2/CSGBox3D3"), NodePath("rotate_x/rotate_y/map/floor_2/CSGBox3D"), NodePath("rotate_x/rotate_y/map/floor_2/CSGBox3D2")]
@@ -267,6 +272,16 @@ outline_size = 0
 horizontal_alignment = 2
 
 [node name="lines" type="Node3D" parent="rotate_x/rotate_y/map"]
+
+[node name="marker_stratilat" type="Node3D" parent="rotate_x/rotate_y/map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 2.08165e-12, 2.08165e-12)
+visible = false
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="rotate_x/rotate_y/map/marker_stratilat"]
+material_override = SubResource("StandardMaterial3D_6ftfc")
+radius = 0.01
+radial_segments = 8
+rings = 4
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.29)
